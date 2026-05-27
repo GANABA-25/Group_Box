@@ -9,7 +9,7 @@ const Document = require("./model/document");
 
 const mongodb_uri = process.env.MONGODB_URI;
 // HOSTING VERSION --------------------------
-const allowedOrigins = ["https://group-box2.vercel.app"];
+const allowedOrigins = ["https://groupbox.vercel.app/"];
 
 const app = express();
 
