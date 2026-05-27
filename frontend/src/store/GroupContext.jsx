@@ -19,12 +19,12 @@ const GroupContextProvider = ({ children }) => {
   const [lecturerGroup, setLecturerGroup] = useState(null);
 
   const joinLecturerGroup = (group) => {
-    setLecturerGroup(group); // update instantly
+    setLecturerGroup(group);
   };
 
   const studentGroups = useMemo(
     () => groupData?.map((g) => g._id),
-    [groupData]
+    [groupData],
   );
 
   const { isLoading, fetchedData, fetchData } = useFetch(getUri);
@@ -62,7 +62,7 @@ const GroupContextProvider = ({ children }) => {
       fetchData(
         `${import.meta.env.VITE_GET_GROUP_URI}?schoolEmail=${
           userData.schoolEmail
-        }`
+        }`,
       );
     }
   }, [isAuthenticated, userData?.schoolEmail]);
@@ -89,7 +89,7 @@ const GroupContextProvider = ({ children }) => {
         `${import.meta.env.VITE_GET_GROUP_ASSIGNMENTS_URI}?${query.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
     }
   }, [
@@ -131,7 +131,7 @@ const GroupContextProvider = ({ children }) => {
         }?${query.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
     }
   }, [
@@ -146,7 +146,7 @@ const GroupContextProvider = ({ children }) => {
     if (userData?.role === "lecturer") {
       if (fetchedCreatedAssignments) {
         setCreatedAssignments(
-          fetchedCreatedAssignments.createdAssignments || []
+          fetchedCreatedAssignments.createdAssignments || [],
         );
       }
 
@@ -182,7 +182,7 @@ const GroupContextProvider = ({ children }) => {
         }?${query.toString()}`,
         {
           headers: { Authorization: `Bearer ${token}` },
-        }
+        },
       );
     }
   }, [
@@ -198,7 +198,7 @@ const GroupContextProvider = ({ children }) => {
     if (userData?.role === "lecturer") {
       if (fetchedSubmittedAssignments) {
         setSubmittedAssignments(
-          fetchedSubmittedAssignments.submittedAssignments || []
+          fetchedSubmittedAssignments.submittedAssignments || [],
         );
       }
 
@@ -217,7 +217,7 @@ const GroupContextProvider = ({ children }) => {
       if (isAuthenticated && assignments.length > 0) {
         const assignmentIds = assignments.map((a) => a._id);
         const studentGroupCodes = groupData.map(
-          (groupCode) => groupCode.groupCode
+          (groupCode) => groupCode.groupCode,
         );
         const query = new URLSearchParams({
           schoolEmail: userData.schoolEmail,
@@ -231,7 +231,7 @@ const GroupContextProvider = ({ children }) => {
           }?${query.toString()}`,
           {
             headers: { Authorization: `Bearer ${token}` },
-          }
+          },
         );
       }
     }

@@ -7,6 +7,7 @@ import io from "socket.io-client";
 
 const socket = io(
   import.meta.env.VITE_SOCKET_URL || "https://groupbox-backend.onrender.com",
+
   {
     transports: ["websocket"], // optional but more stable
   },

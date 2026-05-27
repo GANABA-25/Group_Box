@@ -1,5 +1,4 @@
 require("dotenv").config();
-
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
@@ -9,39 +8,44 @@ const socketIO = require("socket.io");
 const Document = require("./model/document");
 
 const mongodb_uri = process.env.MONGODB_URI;
+// HOSTING VERSION --------------------------
+const allowedOrigins = ["https://groupbox.vercel.app"];
 
 const app = express();
 
-const allowedOrigins = ["https://groupbox.vercel.app", "http://localhost:3000"];
+// const server = http.createServer(app);
+// const io = socketIO(server, {
+//   cors: {
+//     origin: "*",
+//     methods: ["GET", "POST"],
+//   },
+// });
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin) return callback(null, true); // mobile apps / postman
-
-    if (allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      console.log("Blocked by CORS:", origin);
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-};
-
-app.use(cors(corsOptions));
-app.options("*", cors(corsOptions));
-
-app.use(express.json());
-
+// HOSTING VERSION --------------------------
 const server = http.createServer(app);
-
 const io = socketIO(server, {
-  cors: corsOptions,
+  cors: {
+    origin: allowedOrigins,
+    methods: ["GET", "POST"],
+  },
 });
 
 module.exports.io = io;
+// HOSTING VERSION --------------------------
+// HOSTING VERSION --------------------------
+// HOSTING VERSION --------------------------
+// HOSTING VERSION --------------------------
+// HOSTING VERSION --------------------------
+app.use(
+  cors({
+    origin: allowedOrigins,
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    credentials: true,
+  }),
+);
+
+// app.use(cors());
+app.use(express.json());
 
 const userRoutes = require("./routes/userRoutes");
 const groupRoutes = require("./routes/groupRoutes");
@@ -55,12 +59,9 @@ app.use("/documents", documentRoutes);
 
 mongoose
   .connect(mongodb_uri)
-  .then(() => {
-    console.log("MongoDB connected");
-
-    const PORT = process.env.PORT || 8080;
-    server.listen(PORT, () => {
-      console.log(`Server running on port ${PORT}`);
+  .then((connect) => {
+    server.listen(process.env.PORT || 8080, () => {
+      console.log(`Server running on port ${process.env.PORT || 8080}`);
     });
   })
   .catch((error) => {
@@ -68,15 +69,15 @@ mongoose
   });
 
 io.on("connection", (socket) => {
-  console.log("Socket connected");
+  console.log("Socket.IO client connected----");
 
   socket.on("joinGroup", (groupCode) => {
     socket.join(`group_${groupCode}`);
+    console.log(`Socket joined room: group_${groupCode}`);
   });
 
   socket.on("get-document", async (groupDocumentId) => {
     const document = await findOrCreateDocument(groupDocumentId);
-
     socket.join(groupDocumentId);
     socket.emit("load-document", document.data);
 
@@ -90,7 +91,7 @@ io.on("connection", (socket) => {
   });
 
   socket.on("disconnect", () => {
-    console.log("Socket disconnected");
+    console.log("Client disconnected....");
   });
 });
 
@@ -98,12 +99,8 @@ const findOrCreateDocument = async (groupCode) => {
   if (!groupCode) return null;
 
   let document = await Document.findById(groupCode);
-
   if (!document) {
-    document = await Document.create({
-      _id: groupCode,
-      data: "",
-    });
+    document = await Document.create({ _id: groupCode, data: "" });
   }
 
   return document;
