@@ -1,0 +1,26 @@
+@font-face {
+  font-family: "Montserrat-Regular";
+  src: url("./assets/fonts/Montserrat-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-Bold";
+  src: url("./assets/fonts/Montserrat-Bold.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: "Montserrat-ExtraBold";
+  src: url("./assets/fonts/Montserrat-ExtraBold.ttf") format("truetype");
+}
+
+@import "tailwindcss";
+
+@theme {
+  --font-Montserrat-Regular: Montserrat-Regular, "sans-serif";
+  --font-Montserrat-Bold: Montserrat-Bold, "sans-serif";
+  --font-Montserrat-ExtraBold: Montserrat-ExtraBold, "sans-serif";
+}
+
+/* * {
+  font-family: "Montserrat-Regular";
+} */

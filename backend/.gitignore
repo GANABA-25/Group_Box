@@ -1,0 +1,44 @@
+# Environment variables
+.env
+.env.local
+.env*.backup
+!.env.example  # Keep the template file
+
+# Dependency directories
+node_modules/
+**/node_modules/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Build/compiled files
+dist/
+build/
+coverage/
+*.tsbuildinfo
+
+# Cache
+.cache/
+.temp/
+.yarn/cache/
+.yarn/unplugged/
+
+# IDE/Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+
+# Testing
+/junit.xml
+/nyc_output/
+
+# OS files
+Thumbs.db
+ehthumbs.db
